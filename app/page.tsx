@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ContactForm from "../components/contact-form";
 import {
   ArrowUpRight,
   BrainCircuit,
@@ -60,7 +61,7 @@ export default function Home() {
 
       <section id="careers" className="career-section"><div className="container career-card"><div><p className="eyebrow">Future opportunities</p><h2>Learn. Build. Grow with GritGrid.</h2><p>As we grow, we plan to create opportunities for students and emerging technologists through internships and project-based work.</p></div><a className="button button-light" href="#contact">Explore opportunities <ArrowUpRight aria-hidden="true" /></a></div></section>
 
-      <section id="contact" className="contact-section"><div className="container contact-layout"><SectionIntro eyebrow="Contact" title={<>Have an idea?<br /><em>Let&apos;s talk.</em></>}><p>Tell us about your requirement, idea or technical challenge and our team will get back to you.</p></SectionIntro><div className="contact-panel"><span>General enquiries</span><a href="mailto:hello@gritgrid.in">hello@gritgrid.in</a><span>Support</span><a href="mailto:support@gritgrid.in">support@gritgrid.in</a><a className="button button-light" href="mailto:contact@gritgrid.in">Email GritGrid <ArrowUpRight aria-hidden="true" /></a></div></div></section>
+      <section id="contact" className="contact-section"><div className="container contact-layout"><SectionIntro eyebrow="Contact" title={<>Have an idea?<br /><em>Let&apos;s talk.</em></>}><p>Tell us about your requirement, idea or technical challenge and our team will get back to you.</p></SectionIntro><div><ContactForm /><div className="contact-alternatives"><div><span>Prefer email?</span><a href="mailto:hello@gritgrid.in">hello@gritgrid.in</a></div><div><span>Technical support</span><a href="mailto:support@gritgrid.in">support@gritgrid.in</a></div></div></div></div></section>
 
       <footer><div className="container footer-wrap"><Brand /><p>© {new Date().getFullYear()} GritGrid Technologies. All rights reserved.</p><div><a href="#about">About</a><a href="#services">Services</a><a href="#contact">Contact</a></div></div></footer>
     </main>
