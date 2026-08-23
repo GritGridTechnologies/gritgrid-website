@@ -1,498 +1,69 @@
 "use client";
 
 import { useState } from "react";
+import {
+  ArrowUpRight,
+  BrainCircuit,
+  Check,
+  Cloud,
+  Code2,
+  Database,
+  Menu,
+  Network,
+  Search,
+  Sparkles,
+  X,
+} from "lucide-react";
 
 const services = [
-  {
-    number: "01",
-    title: "AI & Machine Learning",
-    description:
-      "Practical AI and machine learning solutions, predictive models, automation and intelligent data-driven systems.",
-  },
-  {
-    number: "02",
-    title: "Data Analytics",
-    description:
-      "Transform complex data into useful insights through analytics, visualization, statistical analysis and reporting.",
-  },
-  {
-    number: "03",
-    title: "Software Development",
-    description:
-      "Modern web and software solutions designed around real business requirements, usability and scalability.",
-  },
-  {
-    number: "04",
-    title: "Full-Stack Development",
-    description:
-      "End-to-end application development covering frontend, backend, APIs, databases and deployment.",
-  },
-  {
-    number: "05",
-    title: "Cloud & DevOps",
-    description:
-      "Cloud-ready infrastructure, deployment workflows, automation, monitoring and reliable application delivery.",
-  },
-  {
-    number: "06",
-    title: "Research & Technical Solutions",
-    description:
-      "Technical research, analytical projects, prototypes, documentation and technology-focused problem solving.",
-  },
+  { icon: BrainCircuit, title: "AI & machine learning", description: "Practical intelligence that turns complex data into better decisions, faster workflows and new possibilities." },
+  { icon: Database, title: "Data analytics", description: "Clear systems for understanding performance, finding opportunity and making information useful." },
+  { icon: Code2, title: "Software development", description: "Thoughtful digital products built around real requirements, strong foundations and people who use them." },
+  { icon: Network, title: "Full-stack development", description: "Frontend, backend, APIs and databases working together as one dependable product." },
+  { icon: Cloud, title: "Cloud & DevOps", description: "Modern delivery systems that make applications easier to release, observe and improve." },
+  { icon: Search, title: "Research & technical solutions", description: "Focused technical research, prototypes and documentation for problems without obvious answers." },
 ];
 
-const technologies = [
-  "Python",
-  "Java",
-  "C# / .NET",
-  "JavaScript",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "FastAPI",
-  "Spring Boot",
-  "SQL",
-  "PostgreSQL",
-  "AWS",
-  "Azure",
-  "Docker",
-  "Git",
-];
+const technologies = ["Python", "Java", "C# / .NET", "JavaScript", "TypeScript", "React", "Next.js", "FastAPI", "Spring Boot", "SQL", "PostgreSQL", "AWS", "Azure", "Docker", "Git"];
+const navItems = [["About", "about"], ["Services", "services"], ["Technology", "technologies"], ["Leadership", "leadership"], ["Careers", "careers"]];
+
+function Brand() {
+  return <a href="#home" className="brand" aria-label="GritGrid Technologies home"><span className="brand-mark">G</span><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
+}
+
+function SectionIntro({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
+  return <div className="section-intro"><p className="eyebrow">{eyebrow}</p><h2>{title}</h2>{children && <div className="intro-copy">{children}</div>}</div>;
+}
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <main>
-      {/* NAVIGATION */}
-      <header className="sticky top-0 z-50 border-b border-purple-100 bg-white/90 backdrop-blur-md">
-        <div className="container flex h-20 items-center justify-between">
-          <a href="#home" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl gradient-bg text-lg font-bold text-white">
-              G
-            </div>
-            <div>
-              <div className="text-lg font-bold tracking-tight text-gray-950">
-                GritGrid
-              </div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.18em] text-purple-600">
-                Technologies
-              </div>
-            </div>
-          </a>
-
-          <nav className="hidden items-center gap-7 text-sm font-medium md:flex">
-            <a href="#home" className="hover:text-purple-600">
-              Home
-            </a>
-            <a href="#about" className="hover:text-purple-600">
-              About
-            </a>
-            <a href="#services" className="hover:text-purple-600">
-              Services
-            </a>
-            <a href="#technologies" className="hover:text-purple-600">
-              Technologies
-            </a>
-            <a href="#leadership" className="hover:text-purple-600">
-              Leadership
-            </a>
-            <a href="#careers" className="hover:text-purple-600">
-              Careers
-            </a>
-          </nav>
-
-          <a
-            href="#contact"
-            className="hidden rounded-full bg-gray-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-purple-700 md:block"
-          >
-            Start a Conversation
-          </a>
-
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="rounded-lg border border-gray-200 px-3 py-2 md:hidden"
-            aria-label="Toggle menu"
-          >
-            ☰
-          </button>
-        </div>
-
-        {menuOpen && (
-          <div className="border-t border-purple-100 bg-white px-6 py-5 md:hidden">
-            <div className="container flex flex-col gap-4 text-sm font-medium">
-              <a href="#home" onClick={() => setMenuOpen(false)}>
-                Home
-              </a>
-              <a href="#about" onClick={() => setMenuOpen(false)}>
-                About
-              </a>
-              <a href="#services" onClick={() => setMenuOpen(false)}>
-                Services
-              </a>
-              <a href="#technologies" onClick={() => setMenuOpen(false)}>
-                Technologies
-              </a>
-              <a href="#leadership" onClick={() => setMenuOpen(false)}>
-                Leadership
-              </a>
-              <a href="#careers" onClick={() => setMenuOpen(false)}>
-                Careers
-              </a>
-              <a href="#contact" onClick={() => setMenuOpen(false)}>
-                Contact
-              </a>
-            </div>
-          </div>
-        )}
+      <header className="site-header">
+        <div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={`#${href}`}>{label}</a>)}</nav><a className="nav-cta" href="#contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"}>{menuOpen ? <X /> : <Menu />}</button></div>
+        {menuOpen && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><a href="#home" onClick={closeMenu}>Home</a>{navItems.map(([label, href]) => <a key={href} href={`#${href}`} onClick={closeMenu}>{label}</a>)}<a href="#contact" onClick={closeMenu}>Contact</a></nav>}
       </header>
 
-      {/* HERO */}
-      <section
-        id="home"
-        className="relative overflow-hidden bg-[#faf9ff] py-24 md:py-32"
-      >
-        <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-purple-200/40 blur-3xl" />
-        <div className="absolute -bottom-40 -left-20 h-96 w-96 rounded-full bg-indigo-200/30 blur-3xl" />
+      <section id="home" className="hero"><div className="hero-grid" aria-hidden="true" /><div className="container hero-layout"><div className="hero-copy"><p className="eyebrow"><Sparkles aria-hidden="true" /> Independent technology studio</p><h1>Make the complex <em>useful.</em></h1><p className="hero-lead">GritGrid Technologies builds practical solutions across software, data, artificial intelligence and cloud — with the curiosity to explore and the discipline to deliver.</p><div className="hero-actions"><a className="button button-primary" href="#services">Explore capabilities <ArrowUpRight aria-hidden="true" /></a><a className="text-link" href="#contact">Talk to GritGrid <ArrowUpRight aria-hidden="true" /></a></div></div><div className="signal-panel" aria-label="GritGrid technology focus"><div className="signal-top"><span>GG / 001</span><span>Systems in progress</span></div><div className="signal-core"><div className="core-ring ring-one" /><div className="core-ring ring-two" /><div className="core-node"><span>G</span></div><div className="orbit orbit-one" /><div className="orbit orbit-two" /></div><div className="signal-bottom"><span>DATA</span><span>INTELLIGENCE</span><span>DELIVERY</span></div></div></div><div className="container proof-row">{[["01", "Technology-first"], ["02", "Data-driven"], ["03", "Built to evolve"]].map(([number, text]) => <div key={number}><span>{number}</span><strong>{text}</strong></div>)}</div></section>
 
-        <div className="container relative">
-          <div className="max-w-4xl">
-            <div className="mb-7 inline-flex rounded-full border border-purple-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-700 shadow-sm">
-              GritGrid Technologies
-            </div>
+      <section id="about" className="section about-section"><div className="container about-layout"><SectionIntro eyebrow="Who we are" title="Starting small. Thinking bigger."><p>GritGrid Technologies is an early-stage technology venture focused on building practical digital and technical solutions.</p><p>Our initial focus is on developing strong capabilities, delivering quality projects and creating a foundation for a larger technology organization.</p></SectionIntro><div className="about-note"><span>Our point of view</span><p>Good technology should reduce friction, reveal possibility and leave people with more room to think.</p><a href="#services" className="text-link">See what we do <ArrowUpRight aria-hidden="true" /></a></div></div></section>
 
-            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight text-gray-950 md:text-7xl">
-              Technology.
-              <br />
-              <span className="gradient-text">Intelligence.</span>
-              <br />
-              Built with Grit.
-            </h1>
+      <section id="services" className="section services-section"><div className="container"><SectionIntro eyebrow="What we do" title="Capabilities for real-world problems."><p>We bring together strategy, engineering and technical curiosity to build things that can work in the real world.</p></SectionIntro><div className="services-grid">{services.map(({ icon: Icon, title, description }, index) => <article className="service-card" key={title}><div className="service-icon"><Icon aria-hidden="true" /></div><span className="card-index">0{index + 1}</span><h3>{title}</h3><p>{description}</p><a href="#contact" aria-label={`Discuss ${title}`}>Discuss a project <ArrowUpRight aria-hidden="true" /></a></article>)}</div></div></section>
 
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-gray-600 md:text-xl">
-              We are an emerging technology company building practical
-              solutions across software, data, artificial intelligence,
-              cloud and digital technologies.
-            </p>
+      <section className="dark-section"><div className="container why-layout"><SectionIntro eyebrow="Why GritGrid" title="Built on learning, execution and ambition."><p>We are building the habits, systems and relationships that turn an early-stage venture into a lasting technology company.</p></SectionIntro><div className="principles">{["Practical thinking", "Continuous learning", "Quality-focused delivery", "Long-term vision"].map((item) => <div key={item}><Check aria-hidden="true" /><span>{item}</span></div>)}</div></div></section>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="#services"
-                className="rounded-full gradient-bg px-7 py-4 text-center font-semibold text-white shadow-lg shadow-purple-200 transition hover:-translate-y-0.5"
-              >
-                Explore Our Services →
-              </a>
-              <a
-                href="#contact"
-                className="rounded-full border border-gray-300 bg-white px-7 py-4 text-center font-semibold text-gray-900 transition hover:border-purple-400 hover:text-purple-700"
-              >
-                Talk to GritGrid
-              </a>
-            </div>
-          </div>
+      <section id="technologies" className="section tech-section"><div className="container"><SectionIntro eyebrow="Technology" title="A growing technical foundation."><p>We work across a modern, evolving stack — choosing tools for the problem, not the trend.</p></SectionIntro><div className="tech-list">{technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></div></section>
 
-          <div className="mt-20 grid gap-4 sm:grid-cols-3">
-            {[
-              ["01", "Technology-first"],
-              ["02", "Data-driven"],
-              ["03", "Future-focused"],
-            ].map(([number, text]) => (
-              <div
-                key={number}
-                className="rounded-2xl border border-purple-100 bg-white p-6 shadow-sm"
-              >
-                <span className="text-sm font-bold text-purple-600">
-                  {number}
-                </span>
-                <p className="mt-3 font-semibold text-gray-900">{text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section id="leadership" className="section leadership-section"><div className="container"><SectionIntro eyebrow="Leadership" title="The people building GritGrid." /><div className="leaders"><article><div className="leader-avatar">D</div><div><h3>Deekshith</h3><p className="role">Founder</p><p>Driving the overall direction, technology strategy and long-term vision of GritGrid Technologies.</p></div></article><article><div className="leader-avatar">D</div><div><h3>Divya</h3><p className="role">Co-Founder</p><p>Contributing to data, analytics, business development and the strategic growth of GritGrid.</p></div></article></div></div></section>
 
-      {/* ABOUT */}
-      <section id="about" className="section bg-white">
-        <div className="container grid gap-14 md:grid-cols-2 md:items-center">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-600">
-              Who We Are
-            </p>
+      <section id="careers" className="career-section"><div className="container career-card"><div><p className="eyebrow">Future opportunities</p><h2>Learn. Build. Grow with GritGrid.</h2><p>As we grow, we plan to create opportunities for students and emerging technologists through internships and project-based work.</p></div><a className="button button-light" href="#contact">Explore opportunities <ArrowUpRight aria-hidden="true" /></a></div></section>
 
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">
-              Starting small.
-              <br />
-              Thinking bigger.
-            </h2>
-          </div>
+      <section id="contact" className="contact-section"><div className="container contact-layout"><SectionIntro eyebrow="Contact" title={<>Have an idea?<br /><em>Let&apos;s talk.</em></>}><p>Tell us about your requirement, idea or technical challenge and our team will get back to you.</p></SectionIntro><div className="contact-panel"><span>General enquiries</span><a href="mailto:hello@gritgrid.in">hello@gritgrid.in</a><span>Support</span><a href="mailto:support@gritgrid.in">support@gritgrid.in</a><a className="button button-light" href="mailto:contact@gritgrid.in">Email GritGrid <ArrowUpRight aria-hidden="true" /></a></div></div></section>
 
-          <div className="space-y-6 text-gray-600">
-            <p className="text-lg leading-8">
-              GritGrid Technologies is an early-stage technology venture
-              focused on building practical digital and technical solutions.
-            </p>
-
-            <p className="leading-7">
-              Our initial focus is on developing strong technical capabilities,
-              delivering quality projects and creating a foundation for a
-              larger technology organization.
-            </p>
-
-            <p className="leading-7">
-              Our long-term ambition is to grow from a small technology team
-              into an organization capable of working with startups,
-              institutions and major enterprises.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="section bg-[#faf9ff]">
-        <div className="container">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-600">
-              What We Do
-            </p>
-
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">
-              Technology capabilities for real-world problems.
-            </h2>
-
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Our capabilities are designed to evolve as GritGrid grows.
-            </p>
-          </div>
-
-          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <article
-                key={service.number}
-                className="group rounded-3xl border border-purple-100 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl hover:shadow-purple-100/60"
-              >
-                <span className="text-sm font-bold text-purple-500">
-                  {service.number}
-                </span>
-
-                <h3 className="mt-8 text-xl font-bold text-gray-950">
-                  {service.title}
-                </h3>
-
-                <p className="mt-4 leading-7 text-gray-600">
-                  {service.description}
-                </p>
-
-                <div className="mt-7 text-sm font-semibold text-purple-600">
-                  Learn more →
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* WHY US */}
-      <section className="section bg-gray-950 text-white">
-        <div className="container">
-          <div className="grid gap-14 md:grid-cols-2">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-300">
-                Why GritGrid
-              </p>
-
-              <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
-                Built on learning, execution and ambition.
-              </h2>
-            </div>
-
-            <div className="grid gap-7 sm:grid-cols-2">
-              {[
-                ["01", "Practical thinking"],
-                ["02", "Continuous learning"],
-                ["03", "Quality-focused delivery"],
-                ["04", "Long-term vision"],
-              ].map(([number, title]) => (
-                <div key={number} className="border-t border-gray-700 pt-5">
-                  <span className="text-sm text-purple-300">{number}</span>
-                  <h3 className="mt-3 font-semibold">{title}</h3>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* TECHNOLOGIES */}
-      <section id="technologies" className="section bg-white">
-        <div className="container">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-600">
-            Technology
-          </p>
-
-          <h2 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">
-            A growing technical foundation.
-          </h2>
-
-          <div className="mt-12 flex flex-wrap gap-3">
-            {technologies.map((technology) => (
-              <span
-                key={technology}
-                className="rounded-full border border-purple-200 bg-[#faf9ff] px-5 py-3 text-sm font-medium text-gray-800 transition hover:border-purple-500 hover:text-purple-700"
-              >
-                {technology}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* LEADERSHIP */}
-      <section id="leadership" className="section bg-[#faf9ff]">
-        <div className="container">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-600">
-            Leadership
-          </p>
-
-          <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-950 md:text-5xl">
-            The people building GritGrid.
-          </h2>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-purple-100 bg-white p-8">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-bg text-xl font-bold text-white">
-                D
-              </div>
-
-              <h3 className="mt-6 text-2xl font-bold text-gray-950">
-                Deekshith
-              </h3>
-
-              <p className="mt-1 font-medium text-purple-600">Founder</p>
-
-              <p className="mt-5 leading-7 text-gray-600">
-                Driving the overall direction, technology strategy and
-                long-term vision of GritGrid Technologies.
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-purple-100 bg-white p-8">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl gradient-bg text-xl font-bold text-white">
-                D
-              </div>
-
-              <h3 className="mt-6 text-2xl font-bold text-gray-950">
-                Divya
-              </h3>
-
-              <p className="mt-1 font-medium text-purple-600">Co-Founder</p>
-
-              <p className="mt-5 leading-7 text-gray-600">
-                Contributing to data, analytics, business development and the
-                strategic growth of GritGrid.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CAREERS */}
-      <section id="careers" className="section bg-white">
-        <div className="container rounded-[2rem] gradient-bg px-7 py-14 text-white md:px-14 md:py-16">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-200">
-              Future Opportunities
-            </p>
-
-            <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-5xl">
-              Learn. Build. Grow with GritGrid.
-            </h2>
-
-            <p className="mt-6 text-lg leading-8 text-purple-50">
-              As we grow, we plan to create opportunities for students and
-              emerging technologists to gain practical experience through
-              internships and project-based work.
-            </p>
-
-            <a
-              href="#contact"
-              className="mt-8 inline-block rounded-full bg-white px-7 py-4 font-semibold text-purple-700 transition hover:bg-purple-50"
-            >
-              Explore Opportunities →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* CONTACT */}
-      <section id="contact" className="section bg-gray-950 text-white">
-        <div className="container grid gap-12 md:grid-cols-2 md:items-end">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-purple-300">
-              Contact
-            </p>
-
-            <h2 className="mt-4 text-4xl font-bold tracking-tight md:text-6xl">
-              Have an idea?
-              <br />
-              Let&apos;s talk.
-            </h2>
-
-            <p className="mt-6 max-w-xl text-gray-400">
-              Tell us about your requirement, idea or technical challenge and
-              our team will get back to you.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-gray-800 bg-gray-900 p-7">
-            <p className="text-sm text-gray-400">General enquiries</p>
-
-            <a
-              href="mailto:hello@gritgrid.in"
-              className="mt-2 block text-xl font-semibold text-white hover:text-purple-300"
-            >
-              hello@gritgrid.in
-            </a>
-
-            <p className="mt-6 text-sm text-gray-400">Support</p>
-
-            <a
-              href="mailto:support@gritgrid.in"
-              className="mt-2 block text-lg font-semibold text-white hover:text-purple-300"
-            >
-              support@gritgrid.in
-            </a>
-
-            <a
-              href="mailto:contact@gritgrid.in"
-              className="mt-8 block rounded-full bg-white px-6 py-3 text-center font-semibold text-gray-950 transition hover:bg-purple-100"
-            >
-              Email GritGrid →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-gray-800 bg-gray-950 py-8 text-gray-400">
-        <div className="container flex flex-col gap-4 text-sm md:flex-row md:items-center md:justify-between">
-          <div>
-            © {new Date().getFullYear()} GritGrid Technologies. All rights
-            reserved.
-          </div>
-
-          <div className="flex gap-5">
-            <a href="#about" className="hover:text-white">
-              About
-            </a>
-            <a href="#services" className="hover:text-white">
-              Services
-            </a>
-            <a href="#contact" className="hover:text-white">
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
+      <footer><div className="container footer-wrap"><Brand /><p>© {new Date().getFullYear()} GritGrid Technologies. All rights reserved.</p><div><a href="#about">About</a><a href="#services">Services</a><a href="#contact">Contact</a></div></div></footer>
     </main>
   );
 }
+
