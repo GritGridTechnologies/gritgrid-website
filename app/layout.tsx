@@ -2,27 +2,27 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GritGrid Technologies | Technology & Digital Solutions",
+  metadataBase: new URL("https://gritgrid.in"),
+  title: {
+    default: "GritGrid Technologies | Make the complex useful",
+    template: "%s | GritGrid Technologies",
+  },
   description:
-    "GritGrid Technologies delivers technology, data, AI, software and digital solutions for students, professionals, startups and businesses.",
-  keywords: [
-    "GritGrid Technologies",
-    "AI solutions",
-    "data analytics",
-    "software development",
-    "technology solutions",
-    "digital solutions"
-  ],
+    "GritGrid Technologies builds practical solutions across software, data, artificial intelligence and cloud.",
+  keywords: ["GritGrid Technologies", "software development", "AI solutions", "data analytics", "cloud technology"],
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "GritGrid Technologies | Make the complex useful",
+    description: "Practical technology solutions across software, data, AI and cloud.",
+    url: "https://gritgrid.in",
+    siteName: "GritGrid Technologies",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful." },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <html lang="en" className="bg-[var(--background)]"><body>{children}</body></html>;
 }
