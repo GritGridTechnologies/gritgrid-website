@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { ModeSwitcher } from "./mode-switcher";
 
 const navItems = [["About", "/about"], ["Services", "/services"], ["Technology", "/technology"], ["Projects", "/projects"], ["Leadership", "/leadership"], ["Careers", "/careers"]];
 
@@ -11,7 +12,7 @@ export function Brand() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  return <header className="site-header"><div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><a className="nav-cta" href="/contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a><button className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</button></div>{open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><a href="/">Home</a>{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<a href="/contact">Contact</a></nav>}</header>;
+  return <header className="site-header"><div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><div className="header-actions"><ModeSwitcher /><a className="nav-cta" href="/contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><button className="menu-toggle" onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</button></div>{open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><a href="/">Home</a>{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<a href="/contact">Contact</a><span className="mobile-mode-label">Mode</span><a href="/">Business</a><a href="/student">Student</a><a href="/sign-in">Team Portal</a></nav>}</header>;
 }
 
 export function SiteFooter() {

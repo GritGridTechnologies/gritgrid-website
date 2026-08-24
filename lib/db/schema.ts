@@ -25,6 +25,14 @@ export const project = pgTable("project", {
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 });
 
+export const studentRequest = pgTable("student_request", {
+  id: text("id").primaryKey(), referenceId: text("referenceId").notNull().unique(), userId: text("userId"), fullName: text("fullName").notNull(), email: text("email").notNull(), phone: text("phone"), college: text("college"), course: text("course"), year: text("year"), projectType: text("projectType").notNull(), projectTitle: text("projectTitle").notNull(), requirements: text("requirements").notNull(), technologyPreference: text("technologyPreference"), deadline: text("deadline"), budgetRange: text("budgetRange"), additionalRequirements: text("additionalRequirements"), status: text("status").notNull().default("new"), createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
+export const pricing = pgTable("pricing", {
+  id: text("id").primaryKey(), service: text("service").notNull().unique(), rangeLabel: text("rangeLabel"), notes: text("notes"), updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
 export const inquiry = pgTable("inquiry", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
