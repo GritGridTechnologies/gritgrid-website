@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ContactForm from "../components/contact-form";
 import { FeaturedProject, ProjectCard, projects } from "../lib/projects";
+import { ModeSwitcher } from "../components/mode-switcher";
 import {
   ArrowUpRight,
   BrainCircuit,
@@ -44,7 +45,7 @@ export default function Home() {
   return (
     <main>
       <header className="site-header">
-        <div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={`#${href}`}>{label}</a>)}</nav><a className="nav-cta" href="#contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"}>{menuOpen ? <X /> : <Menu />}</button></div>
+        <div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={`#${href}`}>{label}</a>)}</nav><div className="header-actions"><ModeSwitcher /><a className="nav-cta" href="#contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"}>{menuOpen ? <X /> : <Menu />}</button></div>
         {menuOpen && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><a href="#home" onClick={closeMenu}>Home</a>{navItems.map(([label, href]) => <a key={href} href={`#${href}`} onClick={closeMenu}>{label}</a>)}<a href="#contact" onClick={closeMenu}>Contact</a></nav>}
       </header>
 
