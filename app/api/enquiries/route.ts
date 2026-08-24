@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       ["Subject", values.subject],
       ["Message", values.requirement],
     ].map(([key, value]) => `${key}: ${value}`).join("\n");
-    const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: "GritGrid Website <noreply@gritgrid.in>", reply_to: String(values.email), to: [recipient], subject: `[${values.enquiryType}] ${values.subject}`, text: fields }) });
+    const response = await fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" }, body: JSON.stringify({ from: "GritGrid Technologies <onboarding@resend.dev>", reply_to: String(values.email), to: [recipient], subject: `[${values.enquiryType}] ${values.subject}`, text: fields }) });
     if (!response.ok) return NextResponse.json({ error: "We could not send your enquiry right now. Please try again later." }, { status: 502 });
     return NextResponse.json({ ok: true });
   } catch {
