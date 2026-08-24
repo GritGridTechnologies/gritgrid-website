@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { studentRequest } from "@/lib/db/schema";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+
+export async function POST(request: Request) { try { const body = await request.json(); const required = ["fullName", "email", "projectType", "projectTitle", "requirements"]; if (required.some((key) => !String(body[key] ?? "").trim())) return NextResponse.json({ error: "Please complete all required fields." }, { status: 400 }); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) return NextResponse.json({ error: "Please enter a valid email." }, { status: 400 }); const session = await auth.api.getSession({ headers: await headers() }); const referenceId = `GG-${Date.now().toString(36).toUpperCase()}`; await db.insert(studentRequest).values({ id: crypto.randomUUID(), referenceId, userId: session?.user?.id, fullName: String(body.fullName).trim(), email: String(body.email).trim(), phone: body.phone, college: body.college, course: body.course, year: body.year, projectType: String(body.projectType).trim(), projectTitle: String(body.projectTitle).trim(), requirements: String(body.requirements).trim(), technologyPreference: body.technologyPreference, deadline: body.deadline, budgetRange: body.budgetRange, additionalRequirements: body.additionalRequirements }); return NextResponse.json({ ok: true, referenceId }); } catch { return NextResponse.json({ error: "We could not save your request right now." }, { status: 500 }); } }
