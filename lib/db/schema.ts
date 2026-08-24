@@ -8,6 +8,31 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+  role: text("role").notNull().default("user"),
+});
+
+export const project = pgTable("project", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  category: text("category").notNull(),
+  description: text("description").notNull(),
+  status: text("status").notNull().default("draft"),
+  featured: boolean("featured").notNull().default(false),
+  liveUrl: text("liveUrl"),
+  repoUrl: text("repoUrl"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const inquiry = pgTable("inquiry", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  company: text("company"),
+  message: text("message").notNull(),
+  status: text("status").notNull().default("new"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
 });
 
 export const session = pgTable("session", {
