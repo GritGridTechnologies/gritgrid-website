@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 
-const navItems = [["About", "/about"], ["Services", "/services"], ["Technology", "/technology"], ["Leadership", "/leadership"], ["Portfolio", "/portfolio"], ["Careers", "/careers"]];
+const navItems = [["About", "/about"], ["Services", "/services"], ["Technology", "/technology"], ["Projects", "/projects"], ["Leadership", "/leadership"], ["Careers", "/careers"]];
 
 export function Brand() {
   return <a href="/" className="brand" aria-label="GritGrid Technologies home"><span className="brand-mark">G</span><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
