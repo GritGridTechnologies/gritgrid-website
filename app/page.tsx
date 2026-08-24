@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ContactForm from "../components/contact-form";
+import { FeaturedProject, projects } from "../lib/projects";
 import {
   ArrowUpRight,
   BrainCircuit,
@@ -26,7 +27,7 @@ const services = [
 ];
 
 const technologies = ["Python", "Java", "C# / .NET", "JavaScript", "TypeScript", "React", "Next.js", "FastAPI", "Spring Boot", "SQL", "PostgreSQL", "AWS", "Azure", "Docker", "Git"];
-const navItems = [["About", "about"], ["Services", "services"], ["Technology", "technologies"], ["Leadership", "leadership"], ["Careers", "careers"]];
+const navItems = [["About", "about"], ["Services", "services"], ["Technology", "technologies"], ["Projects", "projects"], ["Leadership", "leadership"], ["Careers", "careers"]];
 
 function Brand() {
   return <a href="#home" className="brand" aria-label="GritGrid Technologies home"><span className="brand-mark">G</span><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
@@ -52,6 +53,8 @@ export default function Home() {
       <section id="about" className="section about-section"><div className="container about-layout"><SectionIntro eyebrow="Who we are" title="Starting small. Thinking bigger."><p>GritGrid Technologies is an early-stage technology venture focused on building practical digital and technical solutions.</p><p>Our initial focus is on developing strong capabilities, delivering quality projects and creating a foundation for a larger technology organization.</p></SectionIntro><div className="about-note"><span>Our point of view</span><p>Good technology should reduce friction, reveal possibility and leave people with more room to think.</p><a href="#services" className="text-link">See what we do <ArrowUpRight aria-hidden="true" /></a></div></div></section>
 
       <section id="services" className="section services-section"><div className="container"><SectionIntro eyebrow="What we do" title="Capabilities for real-world problems."><p>We bring together strategy, engineering and technical curiosity to build things that can work in the real world.</p></SectionIntro><div className="services-grid">{services.map(({ icon: Icon, title, description }, index) => <article className="service-card" key={title}><div className="service-icon"><Icon aria-hidden="true" /></div><span className="card-index">0{index + 1}</span><h3>{title}</h3><p>{description}</p><a href="#contact" aria-label={`Discuss ${title}`}>Discuss a project <ArrowUpRight aria-hidden="true" /></a></article>)}</div></div></section>
+
+      <section id="projects" className="section projects-preview"><div className="container"><SectionIntro eyebrow="Selected work" title="Engineering ideas into practical digital solutions."><p>Explore selected projects spanning software engineering, AI, cybersecurity, data systems and digital products.</p></SectionIntro><div className="featured-projects">{projects.filter((project) => project.featured).map((project) => <FeaturedProject project={project} key={project.slug} />)}</div><a className="button button-primary view-all-projects" href="/projects">View All Projects →</a></div></section>
 
       <section className="dark-section"><div className="container why-layout"><SectionIntro eyebrow="Why GritGrid" title="Built on learning, execution and ambition."><p>We are building the habits, systems and relationships that turn an early-stage venture into a lasting technology company.</p></SectionIntro><div className="principles">{["Practical thinking", "Continuous learning", "Quality-focused delivery", "Long-term vision"].map((item) => <div key={item}><Check aria-hidden="true" /><span>{item}</span></div>)}</div></div></section>
 

@@ -1,0 +1,5 @@
+import { PageHero, SiteShell } from "../../components/site-shell";
+import { ArrowLink } from "../../components/site-shell";
+
+const projects = [["01", "Practical systems", "Digital tools designed around the people and decisions they support."], ["02", "Data in context", "Analytics experiences that turn scattered information into a useful view."], ["03", "Foundations for scale", "Technical architecture that leaves room for the next version of the idea."]];
+export default function PortfolioPage() { return <SiteShell><PageHero eyebrow="Portfolio" title={<>Work with <em>purpose.</em></>} intro="Our portfolio is growing. We are focused on thoughtful experiments and client work that creates a foundation for what comes next." /><main className="section"><div className="container project-grid">{projects.map(([number,title,description]) => <article className="project-card" key={title}><span className="card-index">{number}</span><h2>{title}</h2><p>{description}</p><ArrowLink href="/contact">Discuss a similar idea</ArrowLink></article>)}</div></main></SiteShell>; }
