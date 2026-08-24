@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ContactForm from "../components/contact-form";
-import { FeaturedProject, projects } from "../lib/projects";
+import { ProjectCard, projects } from "../lib/projects";
 import {
   ArrowUpRight,
   BrainCircuit,
@@ -54,7 +54,7 @@ export default function Home() {
 
       <section id="services" className="section services-section"><div className="container"><SectionIntro eyebrow="What we do" title="Capabilities for real-world problems."><p>We bring together strategy, engineering and technical curiosity to build things that can work in the real world.</p></SectionIntro><div className="services-grid">{services.map(({ icon: Icon, title, description }, index) => <article className="service-card" key={title}><div className="service-icon"><Icon aria-hidden="true" /></div><span className="card-index">0{index + 1}</span><h3>{title}</h3><p>{description}</p><a href="#contact" aria-label={`Discuss ${title}`}>Discuss a project <ArrowUpRight aria-hidden="true" /></a></article>)}</div></div></section>
 
-      <section id="projects" className="section projects-preview"><div className="container"><SectionIntro eyebrow="Selected work" title="Engineering ideas into practical digital solutions."><p>Explore selected projects spanning software engineering, AI, cybersecurity, data systems and digital products.</p></SectionIntro><div className="featured-projects">{projects.filter((project) => project.featured).map((project) => <FeaturedProject project={project} key={project.slug} />)}</div><a className="button button-primary view-all-projects" href="/projects">View All Projects →</a></div></section>
+      <section id="projects" className="section projects-preview"><div className="container"><SectionIntro eyebrow="Selected work" title="Selected Work"><p>Building practical technology across software, AI, cybersecurity, data and digital experiences.</p></SectionIntro><div className="portfolio-grid homepage-project-grid">{projects.map((project) => <ProjectCard project={project} key={project.slug} />)}</div><a className="button button-primary view-all-projects" href="/projects">View All Projects →</a></div></section>
 
       <section className="dark-section"><div className="container why-layout"><SectionIntro eyebrow="Why GritGrid" title="Built on learning, execution and ambition."><p>We are building the habits, systems and relationships that turn an early-stage venture into a lasting technology company.</p></SectionIntro><div className="principles">{["Practical thinking", "Continuous learning", "Quality-focused delivery", "Long-term vision"].map((item) => <div key={item}><Check aria-hidden="true" /><span>{item}</span></div>)}</div></div></section>
 
