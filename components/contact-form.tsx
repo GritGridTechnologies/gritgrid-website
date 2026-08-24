@@ -2,21 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { ArrowUpRight, Check, LoaderCircle } from "lucide-react";
-
-const categories = [
-  "Business / Corporate",
-  "Software & Technology Services",
-  "AI & Data Solutions",
-  "Cloud & Digital Solutions",
-  "Education",
-  "Student",
-  "College / University Project",
-  "Academic / Research Project",
-  "Internship / Career",
-  "Partnership / Collaboration",
-  "General Enquiry",
-  "Other",
-];
+import { ENQUIRY_CATEGORIES } from "../lib/enquiry-categories";
 
 export function ContactForm() {
   const [category, setCategory] = useState("");
@@ -54,7 +40,7 @@ export function ContactForm() {
   }
 
   return <form className="enquiry-form" onSubmit={submit} noValidate>
-    <div className="category-bar"><label htmlFor="enquiryType">Enquiry Type <b>*</b></label><select id="enquiryType" name="enquiryType" value={category} onChange={(event) => setCategory(event.target.value)} required><option value="">Select an enquiry type</option>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select></div>
+    <div className="category-bar"><label htmlFor="enquiryType">Enquiry Type <b>*</b></label><select id="enquiryType" name="enquiryType" value={category} onChange={(event) => setCategory(event.target.value)} required><option value="">Select an enquiry type</option>{ENQUIRY_CATEGORIES.map((item) => <option key={item} value={item}>{item}</option>)}</select></div>
     <div className="form-fields">
       <div className="form-field"><label htmlFor="fullName">Full Name <b>*</b></label><input id="fullName" name="fullName" required autoComplete="name" /></div>
       <div className="form-field"><label htmlFor="email">Email Address <b>*</b></label><input id="email" name="email" type="email" required autoComplete="email" /></div>

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { isEnquiryCategory } from "../../../lib/enquiry-categories";
 
 const requiredFields = ["enquiryType", "fullName", "email", "subject", "requirement"] as const;
-const categories = new Set(["Business / Corporate", "Software & Technology Services", "AI & Data Solutions", "Cloud & Digital Solutions", "Education", "Student", "College / University Project", "Academic / Research Project", "Internship / Career", "Partnership / Collaboration", "General Enquiry", "Other"]);
 
 export async function POST(request: Request) {
   try {
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const values = Object.fromEntries(Object.entries(body).map(([key, value]) => [key, typeof value === "string" ? value.trim() : value]));
     const missing = requiredFields.filter((field) => !values[field]);
     if (missing.length) return NextResponse.json({ error: `Please complete: ${missing.join(", ")}.` }, { status: 400 });
-    if (!categories.has(String(values.enquiryType))) return NextResponse.json({ error: "Please select a valid enquiry type." }, { status: 400 });
+    if (!isEnquiryCategory(values.enquiryType)) return NextResponse.json({ error: "Please select a valid enquiry type." }, { status: 400 });
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(values.email))) return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     if (String(values.fullName).length > 120 || String(values.subject).length > 200 || String(values.requirement).length > 5000) return NextResponse.json({ error: "Please shorten the submitted details and try again." }, { status: 400 });
 
