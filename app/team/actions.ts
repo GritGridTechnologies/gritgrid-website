@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { attendance, user } from "@/lib/db/schema";
+import { attendance, user, lead, workItem, leaveRequest, notification } from "@/lib/db/schema";
 
 export type OrgRole = "owner" | "manager" | "employee" | "user" | "admin";
 
@@ -86,6 +86,59 @@ export async function changeRole(userId: string, nextRole: "employee" | "manager
   await db.update(user).set({ role: nextRole, managerId: nextRole === "employee" ? managerId : null, updatedAt: new Date() }).where(eq(user.id, userId));
   revalidatePath("/admin/team");
   revalidatePath("/team");
+}
+
+export async function getMyLeaveRequests() {
+  const member = await currentUser();
+  return db.select().from(leaveRequest).where(eq(leaveRequest.userId, member.id)).orderBy(desc(leaveRequest.createdAt));
+}
+
+export async function requestLeave(startDate: string, endDate: string, reason: string) {
+  const member = await currentUser();
+  if (!startDate || !endDate || !reason.trim() || reason.length > 500 || endDate < startDate) throw new Error("Enter valid leave dates and a short reason.");
+  const [request] = await db.insert(leaveRequest).values({ id: crypto.randomUUID(), userId: member.id, startDate, endDate, reason: reason.trim() }).returning();
+  revalidatePath("/team");
+  return request;
+}
+
+export async function getMyNotifications() {
+  const member = await currentUser();
+  return db.select().from(notification).where(eq(notification.userId, member.id)).orderBy(desc(notification.createdAt)).limit(30);
+}
+
+export async function markNotificationRead(id: string) {
+  const member = await currentUser();
+  await db.update(notification).set({ readAt: new Date() }).where(and(eq(notification.id, id), eq(notification.userId, member.id)));
+  revalidatePath("/team");
+}
+
+export async function reviewLeave(id: string, status: "approved" | "rejected") {
+  const reviewer = await currentUser();
+  if (reviewer.role !== "owner" && reviewer.role !== "manager") throw new Error("Forbidden");
+  const request = await db.select().from(leaveRequest).where(eq(leaveRequest.id, id)).limit(1);
+  if (!request[0]) throw new Error("Leave request not found.");
+  if (reviewer.role === "manager") {
+    const employee = await db.select({ managerId: user.managerId }).from(user).where(eq(user.id, request[0].userId)).limit(1);
+    if (employee[0]?.managerId !== reviewer.id) throw new Error("Forbidden");
+  }
+  await db.update(leaveRequest).set({ status, reviewedBy: reviewer.id, updatedAt: new Date() }).where(eq(leaveRequest.id, id));
+  await db.insert(notification).values({ id: crypto.randomUUID(), userId: request[0].userId, title: `Leave request ${status}`, body: `Your request for ${request[0].startDate} to ${request[0].endDate} was ${status}.`, href: "/team" });
+  revalidatePath("/admin/leave");
+  revalidatePath("/team");
+}
+
+export async function updateLeadStatus(id: string, status: "new" | "qualified" | "won" | "lost") {
+  await requireOwner();
+  await db.update(lead).set({ status, updatedAt: new Date() }).where(eq(lead.id, id));
+  revalidatePath("/admin/crm");
+}
+
+export async function updateWorkStatus(id: string, status: "backlog" | "in-progress" | "blocked" | "done") {
+  const member = await currentUser();
+  const item = await db.select().from(workItem).where(eq(workItem.id, id)).limit(1);
+  if (!item[0] || (member.role !== "owner" && member.role !== "manager" && item[0].assigneeId !== member.id)) throw new Error("Forbidden");
+  await db.update(workItem).set({ status, updatedAt: new Date() }).where(eq(workItem.id, id));
+  revalidatePath("/admin/work");
 }
 
 export async function getScopedAttendance(startDate?: string, endDate?: string) {
