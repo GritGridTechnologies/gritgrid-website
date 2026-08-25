@@ -26,4 +26,22 @@ if (!pgConfig.connectionString && (!pgConfig.host || !pgConfig.user || !pgConfig
 }
 
 export const pool = new Pool(pgConfig);
+
+// Temporary, sanitized auth diagnostics. Never records SQL, parameters, credentials, or cookies.
+const originalQuery = pool.query.bind(pool);
+pool.query = (async (...args: Parameters<typeof pool.query>) => {
+  try {
+    return await originalQuery(...args);
+  } catch (error) {
+    const firstArg = args[0] as unknown as string | { text?: string } | undefined;
+    const text = typeof firstArg === "string" ? firstArg : firstArg?.text ?? "unknown query";
+    const operation = text.trim().split(/\\s+/).slice(0, 2).join(" ").toUpperCase();
+    const details = error instanceof Error ? error : new Error(String(error));
+    const diagnostic = { id: `SIGNUP_DIAGNOSTIC_${Date.now().toString(36).toUpperCase()}`, operation, name: details.name, message: details.message.replace(/(password|secret|token|database|host|user)=?[^\\s,;]*/gi, "$1=[redacted]"), stack: details.stack?.split("\\n").slice(0, 4).join("\\n") };
+    (globalThis as typeof globalThis & { __gritgridAuthDiagnostic?: typeof diagnostic }).__gritgridAuthDiagnostic = diagnostic;
+    console.error("[auth-diagnostic] database error", { id: diagnostic.id, operation: diagnostic.operation, name: diagnostic.name, message: diagnostic.message, stack: diagnostic.stack });
+    throw error;
+  }
+}) as typeof pool.query;
+
 export const db = drizzle(pool, { schema });

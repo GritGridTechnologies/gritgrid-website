@@ -15,6 +15,12 @@ async function withDiagnostics(handler: (request: Request) => Response | Promise
   try {
     const response = await handler(request);
     console.info("[auth-diagnostic] request", { method: request.method, path, status: response.status });
+    if (path.endsWith("/sign-up/email") && response.status >= 500) {
+      const diagnostic = (globalThis as typeof globalThis & { __gritgridAuthDiagnostic?: { id: string; operation: string; name: string; message: string } }).__gritgridAuthDiagnostic;
+      const id = diagnostic?.id ?? `SIGNUP_DIAGNOSTIC_${Date.now().toString(36).toUpperCase()}`;
+      const safeMessage = diagnostic ? `${diagnostic.name}: ${diagnostic.message}` : "No database exception was captured; inspect the server-side diagnostic log.";
+      return Response.json({ error: "Sign-up failed.", diagnosticId: id, diagnosticMessage: safeMessage }, { status: response.status, headers: { "Cache-Control": "no-store" } });
+    }
     return response;
   } catch (error) {
     console.error("[auth-diagnostic] exception", { method: request.method, path, status: 500, error: errorDetails(error) });
