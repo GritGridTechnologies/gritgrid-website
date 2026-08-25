@@ -8,8 +8,9 @@ export const user = pgTable("user", {
   image: text("image"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
-  role: text("role").notNull().default("user"),
+  role: text("role").notNull().default("employee"),
   managerId: text("managerId"),
+  mustChangePassword: boolean("mustChangePassword").notNull().default(false),
 });
 
 export const project = pgTable("project", {

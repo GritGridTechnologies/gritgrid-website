@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
-export default function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
+export default function AuthForm({ mode, redirectTo }: { mode: "sign-in" | "sign-up"; redirectTo?: string }) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -21,7 +21,7 @@ export default function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
       : await authClient.signIn.email({ email, password });
     setPending(false);
     if (result.error) { setError("We could not complete that request. Check your details and try again."); return; }
-    router.push("/admin"); router.refresh();
+    router.push(redirectTo ?? (isSignUp ? "/team" : "/admin")); router.refresh();
   }
 
   return <form className="auth-form" onSubmit={submit}>

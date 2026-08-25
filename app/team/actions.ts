@@ -8,6 +8,14 @@ import { db } from "@/lib/db";
 import { attendance, user } from "@/lib/db/schema";
 
 export type OrgRole = "owner" | "manager" | "employee" | "user" | "admin";
+
+export async function changePassword(currentPassword: string, newPassword: string) {
+  const member = await currentUser();
+  if (newPassword.length < 8 || newPassword === currentPassword) throw new Error("Choose a different password with at least 8 characters.");
+  await auth.api.changePassword({ body: { currentPassword, newPassword, revokeOtherSessions: false }, headers: await headers() });
+  await db.update(user).set({ mustChangePassword: false, updatedAt: new Date() }).where(eq(user.id, member.id));
+  revalidatePath("/team");
+}
 type CurrentUser = { id: string; name: string; email: string; role?: string; managerId?: string | null };
 
 async function currentUser(): Promise<CurrentUser> {
@@ -16,7 +24,7 @@ async function currentUser(): Promise<CurrentUser> {
   return session.user as CurrentUser;
 }
 
-function isOwner(member: CurrentUser) { return member.role === "owner" || member.role === "admin"; }
+function isOwner(member: CurrentUser) { return member.role === "owner"; }
 
 async function requireOwner() {
   const member = await currentUser();
