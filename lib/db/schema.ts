@@ -71,6 +71,15 @@ export const account = pgTable("account", {
   updatedAt: timestamp("updatedAt").notNull(),
 });
 
+export const attendance = pgTable("attendance", {
+  id: text("id").primaryKey(),
+  userId: text("userId").notNull(),
+  workDate: text("workDate").notNull(),
+  clockIn: timestamp("clockIn", { withTimezone: true }).notNull(),
+  clockOut: timestamp("clockOut", { withTimezone: true }),
+  createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
