@@ -1,62 +1,89 @@
 "use server";
 
-import { and, asc, desc, eq, isNull } from "drizzle-orm";
+import { and, asc, desc, eq, gte, isNull, lte, or } from "drizzle-orm";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { attendance, user } from "@/lib/db/schema";
 
-async function sessionUser() {
+export type OrgRole = "owner" | "manager" | "employee" | "user" | "admin";
+type CurrentUser = { id: string; name: string; email: string; role?: string; managerId?: string | null };
+
+async function currentUser(): Promise<CurrentUser> {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) throw new Error("Unauthorized");
-  return session.user;
+  return session.user as CurrentUser;
+}
+
+function isOwner(member: CurrentUser) { return member.role === "owner" || member.role === "admin"; }
+
+async function requireOwner() {
+  const member = await currentUser();
+  if (!isOwner(member)) throw new Error("Forbidden");
+  return member;
 }
 
 export async function getMyAttendance() {
-  const current = await sessionUser();
-  return db.select().from(attendance).where(eq(attendance.userId, current.id)).orderBy(desc(attendance.workDate)).limit(30);
+  const member = await currentUser();
+  return db.select().from(attendance).where(eq(attendance.userId, member.id)).orderBy(desc(attendance.workDate)).limit(30);
 }
 
 export async function clockIn() {
-  const current = await sessionUser();
+  const member = await currentUser();
   const workDate = new Date().toISOString().slice(0, 10);
-  const existing = await db.select().from(attendance).where(and(eq(attendance.userId, current.id), eq(attendance.workDate, workDate))).limit(1);
+  const existing = await db.select().from(attendance).where(and(eq(attendance.userId, member.id), eq(attendance.workDate, workDate))).limit(1);
   if (existing[0]) return existing[0];
-  const [record] = await db.insert(attendance).values({ id: crypto.randomUUID(), userId: current.id, workDate, clockIn: new Date() }).returning();
+  const [record] = await db.insert(attendance).values({ id: crypto.randomUUID(), userId: member.id, workDate, clockIn: new Date() }).returning();
   revalidatePath("/team");
-  revalidatePath("/admin/attendance");
   return record;
 }
 
 export async function clockOut() {
-  const current = await sessionUser();
+  const member = await currentUser();
   const workDate = new Date().toISOString().slice(0, 10);
-  const [record] = await db.update(attendance).set({ clockOut: new Date() }).where(and(eq(attendance.userId, current.id), eq(attendance.workDate, workDate), isNull(attendance.clockOut))).returning();
+  const [record] = await db.update(attendance).set({ clockOut: new Date() }).where(and(eq(attendance.userId, member.id), eq(attendance.workDate, workDate), isNull(attendance.clockOut))).returning();
   revalidatePath("/team");
-  revalidatePath("/admin/attendance");
   return record ?? null;
 }
 
-async function requireAdmin() {
-  const current = await sessionUser();
-  if ((current as { role?: string }).role !== "admin") throw new Error("Forbidden");
-  return current;
+export async function getManagerTeam() {
+  const member = await currentUser();
+  if (member.role !== "manager") throw new Error("Forbidden");
+  const members = await db.select({ id: user.id, name: user.name, email: user.email, role: user.role }).from(user).where(eq(user.managerId, member.id)).orderBy(asc(user.name));
+  const ids = [member.id, ...members.map((item) => item.id)];
+  return db.select({ record: attendance, member: { id: user.id, name: user.name, email: user.email, role: user.role } }).from(attendance).innerJoin(user, eq(attendance.userId, user.id)).where(or(...ids.map((id) => eq(attendance.userId, id)))).orderBy(desc(attendance.workDate), asc(user.name));
 }
 
-export async function getTeamAttendance() {
-  await requireAdmin();
-  return db.select({ record: attendance, member: { id: user.id, name: user.name, email: user.email, role: user.role } }).from(attendance).innerJoin(user, eq(attendance.userId, user.id)).orderBy(desc(attendance.workDate), asc(user.name));
+export async function getOrganization() {
+  await requireOwner();
+  const members = await db.select({ id: user.id, name: user.name, email: user.email, role: user.role, managerId: user.managerId, createdAt: user.createdAt }).from(user).orderBy(asc(user.name));
+  return { owners: members.filter((item) => item.role === "owner" || item.role === "admin"), managers: members.filter((item) => item.role === "manager"), employees: members.filter((item) => item.role === "employee"), unassigned: members.filter((item) => item.role === "user") };
 }
 
-export async function getTeamMembers() {
-  await requireAdmin();
-  return db.select({ id: user.id, name: user.name, email: user.email, role: user.role, createdAt: user.createdAt }).from(user).orderBy(asc(user.name));
+export async function getCompanyAttendance() {
+  await requireOwner();
+  return db.select({ record: attendance, member: { id: user.id, name: user.name, email: user.email, role: user.role, managerId: user.managerId } }).from(attendance).innerJoin(user, eq(attendance.userId, user.id)).orderBy(desc(attendance.workDate), asc(user.name));
 }
 
-export async function updateTeamRole(userId: string, role: "user" | "admin") {
-  await requireAdmin();
-  await db.update(user).set({ role, updatedAt: new Date() }).where(eq(user.id, userId));
+export async function changeRole(userId: string, nextRole: "employee" | "manager" | "user", managerId: string | null) {
+  const owner = await requireOwner();
+  if (userId === owner.id) throw new Error("You cannot change your own owner access.");
+  if (managerId === userId) throw new Error("A user cannot manage themselves.");
+  if (nextRole === "manager" && managerId) throw new Error("Managers cannot be assigned to a manager.");
+  if (nextRole === "employee" && managerId) {
+    const [manager] = await db.select({ id: user.id, role: user.role }).from(user).where(eq(user.id, managerId)).limit(1);
+    if (!manager || manager.role !== "manager") throw new Error("Invalid manager assignment.");
+  }
+  await db.update(user).set({ role: nextRole, managerId: nextRole === "employee" ? managerId : null, updatedAt: new Date() }).where(eq(user.id, userId));
   revalidatePath("/admin/team");
   revalidatePath("/team");
+}
+
+export async function getScopedAttendance(startDate?: string, endDate?: string) {
+  const member = await currentUser();
+  const dateFilter = startDate && endDate ? and(gte(attendance.workDate, startDate), lte(attendance.workDate, endDate)) : undefined;
+  if (isOwner(member)) return db.select({ record: attendance, member: { id: user.id, name: user.name, role: user.role, managerId: user.managerId } }).from(attendance).innerJoin(user, eq(attendance.userId, user.id)).where(dateFilter).orderBy(desc(attendance.workDate));
+  if (member.role === "manager") return db.select({ record: attendance, member: { id: user.id, name: user.name, role: user.role, managerId: user.managerId } }).from(attendance).innerJoin(user, eq(attendance.userId, user.id)).where(and(or(eq(attendance.userId, member.id), eq(user.managerId, member.id)), dateFilter)).orderBy(desc(attendance.workDate));
+  return db.select({ record: attendance, member: { id: user.id, name: user.name, role: user.role, managerId: user.managerId } }).from(attendance).innerJoin(user, eq(attendance.userId, member.id)).where(and(eq(attendance.userId, member.id), dateFilter)).orderBy(desc(attendance.workDate));
 }

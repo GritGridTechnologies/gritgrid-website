@@ -9,6 +9,7 @@ export const user = pgTable("user", {
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
   role: text("role").notNull().default("user"),
+  managerId: text("managerId"),
 });
 
 export const project = pgTable("project", {
