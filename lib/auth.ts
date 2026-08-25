@@ -10,7 +10,7 @@ export const auth = betterAuth({
   user: { additionalFields: { role: { type: "string", required: false, defaultValue: "user", input: false } } },
   trustedOrigins: [
     ...(process.env.NODE_ENV === "development" ? ["http://localhost:3000", process.env.V0_RUNTIME_URL, process.env.V0_DEV_APP_URL, process.env.V0_BUILD_URL, process.env.V0_SANDBOX_URL].filter(Boolean) as string[] : []),
-    ...(process.env.NODE_ENV === "production" ? [originFrom(process.env.VERCEL_URL), originFrom(process.env.VERCEL_PROJECT_PRODUCTION_URL)].filter(Boolean) as string[] : []),
+    ...(process.env.NODE_ENV === "production" ? ["https://gritgrid.in", "https://www.gritgrid.in", originFrom(process.env.VERCEL_URL), originFrom(process.env.VERCEL_PROJECT_PRODUCTION_URL)].filter(Boolean) as string[] : []),
   ],
   session: { expiresIn: 60 * 60 * 24 * 7, updateAge: 60 * 60 * 24 },
   ...(process.env.NODE_ENV === "development" ? { advanced: { defaultCookieAttributes: { sameSite: "none" as const, secure: true } } } : {}),

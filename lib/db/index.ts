@@ -26,4 +26,5 @@ if (!pgConfig.connectionString && (!pgConfig.host || !pgConfig.user || !pgConfig
 }
 
 export const pool = new Pool(pgConfig);
+
 export const db = drizzle(pool, { schema });
