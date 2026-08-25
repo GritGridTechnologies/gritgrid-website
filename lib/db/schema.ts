@@ -82,6 +82,22 @@ export const attendance = pgTable("attendance", {
   createdAt: timestamp("createdAt", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const lead = pgTable("lead", {
+  id: text("id").primaryKey(), name: text("name").notNull(), email: text("email").notNull(), company: text("company"), source: text("source").notNull().default("website"), status: text("status").notNull().default("new"), ownerId: text("owner_id"), notes: text("notes"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const workItem = pgTable("work_item", {
+  id: text("id").primaryKey(), title: text("title").notNull(), description: text("description"), status: text("status").notNull().default("backlog"), priority: text("priority").notNull().default("medium"), assigneeId: text("assignee_id"), clientName: text("client_name"), dueDate: text("due_date"), createdBy: text("created_by").notNull(), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const leaveRequest = pgTable("leave_request", {
+  id: text("id").primaryKey(), userId: text("user_id").notNull(), startDate: text("start_date").notNull(), endDate: text("end_date").notNull(), reason: text("reason").notNull(), status: text("status").notNull().default("pending"), reviewedBy: text("reviewed_by"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const notification = pgTable("notification", {
+  id: text("id").primaryKey(), userId: text("user_id").notNull(), title: text("title").notNull(), body: text("body").notNull(), href: text("href"), readAt: timestamp("read_at", { withTimezone: true }), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const verification = pgTable("verification", {
   id: text("id").primaryKey(),
   identifier: text("identifier").notNull(),
