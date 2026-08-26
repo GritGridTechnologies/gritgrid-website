@@ -1,4 +1,4 @@
-export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "9052564657";
+export const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919052564657";
 
 export function whatsappUrl(message?: string) {
   const params = message ? `?text=${encodeURIComponent(message)}` : "";
