@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { ModeSwitcher } from "./mode-switcher";
+import { WhatsAppCta } from "./whatsapp-cta";
 
 const navItems = [["About", "/about"], ["Services", "/services"], ["Technology", "/technology"], ["Projects", "/projects"], ["Leadership", "/leadership"], ["Careers", "/careers"]];
 
@@ -20,7 +21,7 @@ export function SiteFooter() {
 }
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
-  return <><SiteHeader />{children}<SiteFooter /></>;
+  return <><SiteHeader />{children}<WhatsAppCta /><SiteFooter /></>;
 }
 
 export function PageHero({ eyebrow, title, intro }: { eyebrow: string; title: React.ReactNode; intro: string }) {
