@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful.", images: ["https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png"] },
   icons: {
-    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png",
-    apple: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png",
+    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gzvmg8y86Sjl6hZg8fDnsuFq2znPLG.png",
+    apple: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gzvmg8y86Sjl6hZg8fDnsuFq2znPLG.png",
   },
   robots: { index: true, follow: true },
 };
