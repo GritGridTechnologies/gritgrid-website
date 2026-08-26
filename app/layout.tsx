@@ -4,11 +4,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://gritgrid.in"),
   title: {
-    default: "GritGrid Technologies | Make the complex useful",
+    default: "GritGrid Technologies | AI, Data, Software & Digital Solutions",
     template: "%s | GritGrid Technologies",
   },
   description:
-    "GritGrid Technologies builds practical solutions across software, data, artificial intelligence and cloud.",
+    "GritGrid Technologies builds practical technology solutions across artificial intelligence, data science, software, cloud and digital innovation.",
   keywords: ["GritGrid Technologies", "software development", "AI solutions", "data analytics", "cloud technology"],
   alternates: { canonical: "/" },
   openGraph: {
@@ -19,7 +19,11 @@ export const metadata: Metadata = {
     locale: "en_IN",
     type: "website",
   },
-  twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful." },
+  twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful.", images: ["https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png"] },
+  icons: {
+    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png",
+    apple: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png",
+  },
   robots: { index: true, follow: true },
 };
 
