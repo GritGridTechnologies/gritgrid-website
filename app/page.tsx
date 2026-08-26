@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import ContactForm from "../components/contact-form";
 import { FeaturedProject, ProjectCard, projects } from "../lib/projects";
@@ -34,7 +35,7 @@ const technologies = ["Python", "Java", "C# / .NET", "JavaScript", "TypeScript",
 const navItems = [["About", "about"], ["Services", "services"], ["Technology", "technologies"], ["Projects", "projects"], ["Leadership", "leadership"], ["Careers", "careers"]];
 
 function Brand() {
-  return <a href="#home" className="brand" aria-label="GritGrid Technologies home"><span className="brand-mark">G</span><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
+  return <a href="#home" className="brand home-brand" aria-label="GritGrid Technologies home"><span className="home-brand-crop"><Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png" alt="GritGrid Technology" width={360} height={203} priority /></span><span className="sr-only">GritGrid Technologies</span></a>;
 }
 
 function SectionIntro({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
@@ -46,13 +47,13 @@ export default function Home() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <main>
+    <main className="home-page">
       <header className="site-header">
         <div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={`#${href}`}>{label}</a>)}</nav><div className="header-actions"><StudentDiscoveryHint /><ModeSwitcher /><a className="nav-cta" href="#contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"}>{menuOpen ? <X /> : <Menu />}</button></div>
         {menuOpen && <nav id="mobile-navigation" className="mobile-nav" aria-label="Mobile navigation"><a href="#home" onClick={closeMenu}>Home</a>{navItems.map(([label, href]) => <a key={href} href={`#${href}`} onClick={closeMenu}>{label}</a>)}<a href="#contact" onClick={closeMenu}>Contact</a></nav>}
       </header>
 
-      <section id="home" className="hero"><div className="hero-grid" aria-hidden="true" /><div className="container hero-layout"><div className="hero-copy"><p className="eyebrow"><Sparkles aria-hidden="true" /> Independent technology studio</p><h1>Make the complex <em>useful.</em></h1><p className="hero-lead">GritGrid Technologies builds practical solutions across software, data, artificial intelligence and cloud — with the curiosity to explore and the discipline to deliver.</p><div className="hero-actions"><a className="button button-primary" href="#services">Explore capabilities <ArrowUpRight aria-hidden="true" /></a><a className="text-link" href="#contact">Talk to GritGrid <ArrowUpRight aria-hidden="true" /></a></div></div><div className="signal-panel" aria-label="GritGrid technology focus"><div className="signal-top"><span>GG / 001</span><span>Systems in progress</span></div><div className="signal-core"><div className="core-ring ring-one" /><div className="core-ring ring-two" /><div className="core-node"><span>G</span></div><div className="orbit orbit-one" /><div className="orbit orbit-two" /></div><div className="signal-bottom"><span>DATA</span><span>INTELLIGENCE</span><span>DELIVERY</span></div></div></div><div className="container proof-row">{[["01", "Technology-first"], ["02", "Data-driven"], ["03", "Built to evolve"]].map(([number, text]) => <div key={number}><span>{number}</span><strong>{text}</strong></div>)}</div></section>
+      <section id="home" className="hero home-hero"><div className="hero-grid" aria-hidden="true" /><div className="home-node home-node-one" aria-hidden="true" /><div className="home-node home-node-two" aria-hidden="true" /><div className="container hero-layout"><div className="hero-copy"><p className="eyebrow"><Sparkles aria-hidden="true" /> Independent technology studio</p><h1>Building smarter technology. <em>Making complexity useful.</em></h1><p className="hero-lead">GritGrid Technologies builds practical solutions across artificial intelligence, data, software, cloud and digital innovation — with the curiosity to explore and the discipline to deliver.</p><div className="hero-actions"><a className="button button-primary" href="#services">Explore our services <ArrowUpRight aria-hidden="true" /></a><a className="text-link" href="#contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><div className="home-proof"><span>AI &amp; DATA</span><span>SOFTWARE</span><span>CLOUD</span></div></div><div className="hero-visual"><Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-fCyk8Wcvqb3YcAynXhd58SnAKBaamY.png" alt="GritGrid Technology illustration showing people and connected technology" width={1024} height={576} priority className="hero-brand-image" /><div className="hero-visual-caption"><span>Human-led technology</span><span>GG / 001</span></div></div></div><div className="container proof-row">{[["01", "Technology-first"], ["02", "Data-driven"], ["03", "Built to evolve"]].map(([number, text]) => <div key={number}><span>{number}</span><strong>{text}</strong></div>)}</div></section>
 
       <section id="about" className="section about-section"><div className="container about-layout"><SectionIntro eyebrow="Who we are" title="Starting small. Thinking bigger."><p>GritGrid Technologies is an early-stage technology venture focused on building practical digital and technical solutions.</p><p>Our initial focus is on developing strong capabilities, delivering quality projects and creating a foundation for a larger technology organization.</p></SectionIntro><div className="about-note"><span>Our point of view</span><p>Good technology should reduce friction, reveal possibility and leave people with more room to think.</p><a href="#services" className="text-link">See what we do <ArrowUpRight aria-hidden="true" /></a></div></div></section>
 
