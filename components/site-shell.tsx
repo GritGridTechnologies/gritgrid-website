@@ -7,8 +7,10 @@ import { WhatsAppCta } from "./whatsapp-cta";
 
 const navItems = [["About", "/about"], ["Services", "/services"], ["Technology", "/technology"], ["Projects", "/projects"], ["Leadership", "/leadership"], ["Careers", "/careers"]];
 
+const gritGridLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png";
+
 export function Brand() {
-  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><span className="brand-mark">G</span><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
+  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><img className="brand-logo" src={gritGridLogo} alt="GritGrid Technologies logo" width="42" height="42" /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
 }
 
 export function SiteHeader() {

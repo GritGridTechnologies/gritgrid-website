@@ -35,7 +35,7 @@ const technologies = ["Python", "Java", "C# / .NET", "JavaScript", "TypeScript",
 const navItems = [["About", "about"], ["Services", "services"], ["Technology", "technologies"], ["Projects", "projects"], ["Leadership", "leadership"], ["Careers", "careers"]];
 
 function Brand() {
-  return <a href="#home" className="brand home-brand" aria-label="GritGrid Technologies home"><span className="home-brand-crop"><Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Ez6kxdEp5OUgXdCY1ASCpuHw14JOSH.png" alt="GritGrid Technology" width={360} height={203} priority /></span><span className="sr-only">GritGrid Technologies</span></a>;
+  return <a href="#home" className="brand home-brand" aria-label="GritGrid Technologies home"><Image className="brand-logo" src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png" alt="GritGrid Technologies logo" width={42} height={42} priority /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
 }
 
 function SectionIntro({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
