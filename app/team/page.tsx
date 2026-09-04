@@ -2,6 +2,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getManagerTeam, getMyAttendance } from "./actions";
+import { getCompanyStatistics } from "@/lib/statistics";
+import TeamStatistics from "@/components/team-statistics";
 import TeamPortal from "@/components/team-portal";
 
 export default async function TeamPage() {
@@ -11,5 +13,6 @@ export default async function TeamPage() {
   const role = (session.user as { role?: string }).role ?? "employee";
   const records = await getMyAttendance();
   const teamRecords = role === "manager" ? await getManagerTeam() : [];
-  return <TeamPortal name={session.user.name} role={role} records={records} teamRecords={teamRecords} />;
+  const statistics = await getCompanyStatistics();
+  return <><TeamPortal name={session.user.name} role={role} records={records} teamRecords={teamRecords} /><TeamStatistics data={statistics} role={role} /></>;
 }
