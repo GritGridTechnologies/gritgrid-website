@@ -1,4 +1,4 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -96,6 +96,16 @@ export const leaveRequest = pgTable("leave_request", {
 
 export const notification = pgTable("notification", {
   id: text("id").primaryKey(), userId: text("user_id").notNull(), title: text("title").notNull(), body: text("body").notNull(), href: text("href"), readAt: timestamp("read_at", { withTimezone: true }), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const companyStatistics = pgTable("company_statistics", {
+  id: text("id").primaryKey(), internalQueryCount: integer("internal_query_count").notNull().default(0), internalCompletedProjects: integer("internal_completed_projects").notNull().default(0), internalLiveProjects: integer("internal_live_projects").notNull().default(0), publicQueryCount: integer("public_query_count").notNull().default(347), publicCompletedProjects: integer("public_completed_projects").notNull().default(149), publicLiveProjects: integer("public_live_projects").notNull().default(6), updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+export const projectUpdateRequest = pgTable("project_update_request", {
+  id: text("id").primaryKey(), type: text("type").notNull(), projectName: text("project_name"), description: text("description"), requestedBy: text("requested_by").notNull(), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(), status: text("status").notNull().default("pending_manager"), managerApproval: text("manager_approval").notNull().default("pending"), ownerApproval: text("owner_approval").notNull().default("pending"), managerApprovedAt: timestamp("manager_approved_at", { withTimezone: true }), ownerApprovedAt: timestamp("owner_approved_at", { withTimezone: true }), rejectionReason: text("rejection_reason"),
+});
+export const statisticsAuditLog = pgTable("statistics_audit_log", {
+  id: text("id").primaryKey(), action: text("action").notNull(), userId: text("user_id").notNull(), previousValue: integer("previous_value").notNull(), newValue: integer("new_value").notNull(), approvalStatus: text("approval_status").notNull(), managerApproval: text("manager_approval").notNull(), ownerApproval: text("owner_approval").notNull(), relatedRequestId: text("related_request_id"), createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const verification = pgTable("verification", {

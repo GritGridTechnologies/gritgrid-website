@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { ModeSwitcher } from "./mode-switcher";
 import { WhatsAppCta } from "./whatsapp-cta";
@@ -10,7 +11,7 @@ const navItems = [["About", "/about"], ["Services", "/services"], ["Technology",
 const gritGridLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png";
 
 export function Brand() {
-  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><img className="brand-logo" src={gritGridLogo} alt="GritGrid Technologies logo" width="42" height="42" /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
+  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><Image className="brand-logo" src={gritGridLogo} alt="GritGrid Technologies logo" width={42} height={42} /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
 }
 
 export function SiteHeader() {
@@ -19,7 +20,7 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
-  return <footer><div className="container footer-wrap"><Brand /><p>© {new Date().getFullYear()} GritGrid Technologies. All rights reserved.</p><div><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refund-cancellation">Refunds</a><a href="/cookies">Cookies</a><a href="/responsible-academic-support">Student support</a><a href="/contact">Contact</a></div></div></footer>;
+  return <footer><div className="container footer-wrap"><Brand /><p>© {new Date().getFullYear()} GritGrid Technologies. Built for useful outcomes.</p><div className="footer-links"><a href="/about">About</a><a href="/services">Services</a><a href="/projects">Projects</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refund-cancellation">Refunds</a><a href="/cookies">Cookies</a><a href="/responsible-academic-support">Student support</a><a href="/contact">Contact</a></div></div></footer>;
 }
 
 export function SiteShell({ children }: { children: React.ReactNode }) {

@@ -8,6 +8,7 @@ import { ModeSwitcher } from "../components/mode-switcher";
 import { StudentDiscoveryHint } from "../components/student-discovery-hint";
 import { WhatsAppCta } from "../components/whatsapp-cta";
 import { whatsappUrl } from "../lib/whatsapp";
+import PublicStatistics from "../components/public-statistics";
 import {
   ArrowUpRight,
   BrainCircuit,
@@ -64,6 +65,10 @@ export default function Home() {
       <section className="dark-section"><div className="container why-layout"><SectionIntro eyebrow="Why GritGrid" title="Built on learning, execution and ambition."><p>We are building the habits, systems and relationships that turn an early-stage venture into a lasting technology company.</p></SectionIntro><div className="principles">{["Practical thinking", "Continuous learning", "Quality-focused delivery", "Long-term vision"].map((item) => <div key={item}><Check aria-hidden="true" /><span>{item}</span></div>)}</div></div></section>
 
       <section id="technologies" className="section tech-section"><div className="container"><SectionIntro eyebrow="Technology" title="A growing technical foundation."><p>We work across a modern, evolving stack — choosing tools for the problem, not the trend.</p></SectionIntro><div className="tech-list">{technologies.map((technology) => <span key={technology}>{technology}</span>)}</div></div></section>
+
+      <section className="section process-section" aria-labelledby="process-title"><div className="container"><SectionIntro eyebrow="How we work" title={<>Small moves.<br /><em>Real momentum.</em></>}><p>Good work is a conversation between people, constraints and evidence. Our process keeps all three in the room.</p></SectionIntro><div className="process-line">{["Map the real problem", "Make the first useful move", "Measure what changed", "Build what compounds"].map((step, index) => <article className="process-step" key={step}><span>0{index + 1}</span><div className="process-dot" /><h3>{step}</h3><p>{["Find the signal beneath the noise.", "Ship something people can use.", "Learn from behavior, not assumptions.", "Leave a stronger system behind."][index]}</p></article>)}</div></div></section>
+
+      <PublicStatistics context="A living view of work in motion" />
 
       <section id="leadership" className="section leadership-section"><div className="container"><SectionIntro eyebrow="Leadership" title="The people building GritGrid." /><div className="leaders"><article><div className="leader-avatar">D</div><div><h3>Deekshith</h3><p className="role">Founder</p><p>Driving the overall direction, technology strategy and long-term vision of GritGrid Technologies.</p></div></article><article><div className="leader-avatar">D</div><div><h3>Divya</h3><p className="role">Co-Founder</p><p>Contributing to data, analytics, business development and the strategic growth of GritGrid.</p></div></article></div></div></section>
 
