@@ -18,11 +18,12 @@ export const metadata: Metadata = {
     siteName: "GritGrid Technologies",
     locale: "en_IN",
     type: "website",
+    images: ["https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png"],
   },
-  twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful.", images: ["https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-3m2ppM8PB6HQH4KdXyw7510e7ydkNS.png"] },
+  twitter: { card: "summary_large_image", title: "GritGrid Technologies", description: "Make the complex useful.", images: ["https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png"] },
   icons: {
-    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gzvmg8y86Sjl6hZg8fDnsuFq2znPLG.png",
-    apple: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-gzvmg8y86Sjl6hZg8fDnsuFq2znPLG.png",
+    icon: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png",
+    apple: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png",
   },
   robots: { index: true, follow: true },
 };
