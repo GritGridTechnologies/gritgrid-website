@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isEnquiryCategory } from "../../../lib/enquiry-categories";
 import { sendGritGridEmail, formatSubmittedFields } from "../../../lib/resend";
+import { and, eq, gte } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { inquiry } from "@/lib/db/schema";
 import { recordSuccessfulInquiry } from "@/lib/statistics";
@@ -16,6 +17,10 @@ export async function POST(request: Request) {
     if (!isEnquiryCategory(values.enquiryType)) return NextResponse.json({ error: "Please select a valid enquiry type." }, { status: 400 });
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(values.email))) return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
     if (String(values.fullName).length > 120 || String(values.subject).length > 200 || String(values.requirement).length > 5000) return NextResponse.json({ error: "Please shorten the submitted details and try again." }, { status: 400 });
+
+    const duplicateSince = new Date(Date.now() - 10 * 60 * 1000);
+    const duplicate = await db.select({ id: inquiry.id }).from(inquiry).where(and(eq(inquiry.email, String(values.email)), eq(inquiry.message, String(values.requirement)), gte(inquiry.createdAt, duplicateSince))).limit(1);
+    if (duplicate[0]) return NextResponse.json({ error: "This enquiry was already submitted recently. Please wait before sending it again." }, { status: 409 });
 
     const fields = [
       ["Enquiry Type", values.enquiryType],

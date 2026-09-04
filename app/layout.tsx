@@ -29,5 +29,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className="bg-[var(--background)]"><body>{children}</body></html>;
+  const organizationSchema = { "@context": "https://schema.org", "@type": "Organization", name: "GritGrid Technologies", url: "https://gritgrid.in", logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png" };
+  return <html lang="en" className="bg-[var(--background)]"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />{children}</body></html>;
 }
