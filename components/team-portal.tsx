@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { Clock3, LogIn, LogOut, ShieldCheck, Users, BarChart3 } from "lucide-react";
+import { ArrowUpRight, BookOpen, Clock3, LogIn, LogOut, ShieldCheck, Users, BarChart3 } from "lucide-react";
 import { clockIn, clockOut } from "@/app/team/actions";
 
 type RecordItem = { id: string; workDate: string; clockIn: Date | string; clockOut: Date | string | null };
@@ -43,6 +43,12 @@ export default function TeamPortal({ name, role, records, teamRecords }: { name:
             <p>{today ? `Clocked in at ${time(today.clockIn)}${today.clockOut ? ` · out at ${time(today.clockOut)}` : ""}` : "Your start time is recorded securely when you clock in."}</p>
           </div>
           {action === "complete" ? <span className="team-complete">Attendance complete</span> : <button className="button button-primary team-action" disabled={pending} onClick={() => startTransition(() => { void (action === "in" ? clockIn() : clockOut()); })}>{action === "in" ? <><LogIn aria-hidden="true" /> Clock in</> : <><LogOut aria-hidden="true" /> Clock out</>}</button>}
+        </section>
+
+        <section className="team-diary-shortcut" aria-labelledby="team-diary-shortcut-title">
+          <div className="team-diary-shortcut-icon"><BookOpen aria-hidden="true" /></div>
+          <div className="team-diary-shortcut-copy"><p className="eyebrow">Daily work, clearly shared</p><h2 id="team-diary-shortcut-title">Your team diary</h2><p>Keep private reference notes and share a focused daily update with the GritGrid team.</p></div>
+          <Link className="button button-primary" href="/team/diary">Open Diary <ArrowUpRight aria-hidden="true" /></Link>
         </section>
 
         {role === "manager" && <section className="team-history">
