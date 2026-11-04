@@ -317,3 +317,97 @@ footer { background: var(--ink); color: #aaa9a5; }.footer-wrap { display: flex; 
 @media (prefers-reduced-motion: reduce) {
   .diary-page *, .diary-page *::before, .diary-page *::after, .team-diary-shortcut { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+@keyframes gritgrid-fade-up {
+  from { opacity: 0; transform: translate3d(0, 16px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes gritgrid-hero-arrive {
+  from { opacity: 0; scale: .985; }
+  to { opacity: 1; scale: 1; }
+}
+@keyframes gritgrid-hero-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -4px; }
+}
+@keyframes gritgrid-menu-enter {
+  from { opacity: 0; transform: translate3d(0, -8px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.motion-reveal {
+  opacity: 0;
+  translate: 0 16px;
+  transition:
+    opacity 620ms cubic-bezier(.22, 1, .36, 1) var(--motion-delay, 0ms),
+    translate 620ms cubic-bezier(.22, 1, .36, 1) var(--motion-delay, 0ms),
+    transform 240ms cubic-bezier(.22, 1, .36, 1),
+    background-color 220ms ease,
+    box-shadow 260ms cubic-bezier(.22, 1, .36, 1),
+    border-color 220ms ease,
+    color 220ms ease;
+}
+.motion-reveal.motion-revealed { opacity: 1; translate: 0 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-page .hero-copy > * {
+    animation: gritgrid-fade-up 680ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .home-page .hero-copy > :nth-child(1) { animation-delay: 60ms; }
+  .home-page .hero-copy > :nth-child(2) { animation-delay: 130ms; }
+  .home-page .hero-copy > :nth-child(3) { animation-delay: 200ms; }
+  .home-page .hero-copy > :nth-child(4) { animation-delay: 270ms; }
+  .home-page .hero-copy > :nth-child(5) { animation-delay: 340ms; }
+  .home-page .hero-visual {
+    animation:
+      gritgrid-hero-arrive 820ms cubic-bezier(.22, 1, .36, 1) 160ms both,
+      gritgrid-hero-float 8s ease-in-out 1s infinite;
+  }
+  .home-page .hero-visual-caption { animation: gritgrid-fade-up 620ms cubic-bezier(.22, 1, .36, 1) 440ms both; }
+  .page-hero-inner { animation: gritgrid-fade-up 680ms cubic-bezier(.22, 1, .36, 1) both; }
+  .mobile-nav { animation: gritgrid-menu-enter 260ms cubic-bezier(.22, 1, .36, 1) both; }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .home-page .service-card,
+  .home-page .project-card,
+  .home-page .portfolio-card,
+  .home-page .leaders article {
+    transition: transform 280ms cubic-bezier(.22, 1, .36, 1), box-shadow 280ms cubic-bezier(.22, 1, .36, 1);
+  }
+  .home-page .service-card:hover,
+  .home-page .project-card:hover,
+  .home-page .portfolio-card:hover,
+  .home-page .leaders article:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px color-mix(in srgb, var(--blue) 11%, transparent);
+  }
+  .home-page .service-icon { transition: transform 240ms cubic-bezier(.22, 1, .36, 1); }
+  .home-page .service-card:hover .service-icon { transform: translateY(-2px) scale(1.04); }
+  .home-page .hero-visual { transition: transform 320ms cubic-bezier(.22, 1, .36, 1), box-shadow 320ms cubic-bezier(.22, 1, .36, 1); }
+  .home-page .hero-visual:hover {
+    transform: translateY(-4px) rotate(.5deg);
+    box-shadow: 22px 28px 58px color-mix(in srgb, var(--blue) 15%, transparent);
+  }
+  .home-page .tech-list span { transition: transform 240ms ease, border-color 240ms ease, color 240ms ease, box-shadow 240ms ease; }
+  .home-page .tech-list span:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px color-mix(in srgb, var(--blue) 8%, transparent);
+  }
+  .home-page .brand-logo { transition: transform 240ms cubic-bezier(.22, 1, .36, 1); }
+  .home-page .brand:hover .brand-logo { transform: translateY(-1px) scale(1.04); }
+  .nav-cta svg, .button svg, .text-link svg, .service-card a svg { transition: transform 240ms cubic-bezier(.22, 1, .36, 1); }
+  .nav-cta:hover svg, .button:hover:not(:disabled) svg, .text-link:hover svg, .service-card a:hover svg { transform: translate(3px, -2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-reveal, .motion-reveal.motion-revealed {
+    opacity: 1 !important;
+    translate: 0 0 !important;
+    transition: none !important;
+  }
+  .home-page .hero-copy > *, .home-page .hero-visual, .home-page .hero-visual-caption, .page-hero-inner, .mobile-nav {
+    animation: none !important;
+  }
+  .home-page .hero-visual { translate: none !important; scale: none !important; }
+}
