@@ -742,6 +742,7 @@ footer { background: var(--ink); color: #aaa9a5; }.footer-wrap { display: flex; 
   .process-line { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
+  .footer-wrap > div:last-child { width: 100%; min-width: 0; flex-wrap: wrap; column-gap: 16px; row-gap: 12px; }
   .home-page .hero-copy h1 { font-size: clamp(2.65rem, 10.8vw, 3.5rem); }
   .home-page .technology-visual { min-height: 382px; }
   .technology-visual .signal-top, .technology-visual .signal-bottom { min-height: 48px; padding: 12px; font-size: 8px; }
@@ -776,6 +777,11 @@ footer { background: var(--ink); color: #aaa9a5; }.footer-wrap { display: flex; 
 }
 
 .home-page .home-node { display: none; }
+:root { --orange-text: #97430f; --orange-heading: #d45b25; }
+.home-page .hero-copy h1 em { background-image: linear-gradient(100deg, var(--blue), var(--orange-heading)); }
+@media (min-width: 1200px) { .home-page .hero-copy h1 { font-size: clamp(3.5rem, 4.2vw, 4.5rem); } }
+.signal-chip > span, .architecture-layer-number, .process-step > span { color: var(--orange-text); }
+.site-header .desktop-nav a:hover, .site-header .desktop-nav a:focus-visible, .site-header .mobile-nav a:hover, .site-header .mobile-nav a:focus-visible { color: var(--orange-text); }
 @media (max-width: 390px) { .nav-wrap { gap: 16px; } }
 @media (max-width: 360px) {
   .mode-trigger { width: 40px; min-width: 40px; justify-content: center; gap: 0; padding: 8px; }

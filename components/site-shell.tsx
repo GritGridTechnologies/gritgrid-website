@@ -11,14 +11,14 @@ const navItems = [["About", "/about"], ["Services", "/services"], ["Technology",
 
 const gritGridLogo = "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-R9kMzItDuu3i4AlQdfGLt58rqu31QK.png";
 
-export function Brand() {
-  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><Image className="brand-logo" src={gritGridLogo} alt="GritGrid Technologies logo" width={42} height={42} /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
+export function Brand({ priority = false }: { priority?: boolean }) {
+  return <a href="/" className="brand" aria-label="GritGrid Technologies home"><Image className="brand-logo" src={gritGridLogo} alt="GritGrid Technologies logo" width={42} height={42} priority={priority} /><span><strong>GritGrid</strong><small>Technologies</small></span></a>;
 }
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const closeNavigation = () => setOpen(false);
-  return <header className="site-header"><div className="container nav-wrap"><Brand /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><div className="header-actions"><ModeSwitcher /><a className="nav-cta" href="/contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><button className="menu-toggle" onClick={() => setOpen((current) => !current)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</button></div><nav id="mobile-navigation" className={`mobile-nav ${open ? "is-open" : ""}`} aria-label="Mobile navigation" aria-hidden={!open}><div className="mobile-nav-inner"><a href="/" onClick={closeNavigation}>Home</a>{navItems.map(([label, href]) => <a key={href} href={href} onClick={closeNavigation}>{label}</a>)}<a href="/contact" onClick={closeNavigation}>Contact</a><span className="mobile-mode-label">Mode</span><a href="/" onClick={closeNavigation}>Business</a><a href="/student" onClick={closeNavigation}>Student</a><a href="/sign-in" onClick={closeNavigation}>Team Portal</a></div></nav></header>;
+  return <header className="site-header"><div className="container nav-wrap"><Brand priority /><nav className="desktop-nav" aria-label="Primary navigation">{navItems.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><div className="header-actions"><ModeSwitcher /><a className="nav-cta" href="/contact">Start a conversation <ArrowUpRight aria-hidden="true" /></a></div><button className="menu-toggle" onClick={() => setOpen((current) => !current)} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Close navigation" : "Open navigation"}>{open ? <X /> : <Menu />}</button></div><nav id="mobile-navigation" className={`mobile-nav ${open ? "is-open" : ""}`} aria-label="Mobile navigation" aria-hidden={!open}><div className="mobile-nav-inner"><a href="/" onClick={closeNavigation}>Home</a>{navItems.map(([label, href]) => <a key={href} href={href} onClick={closeNavigation}>{label}</a>)}<a href="/contact" onClick={closeNavigation}>Contact</a><span className="mobile-mode-label">Mode</span><a href="/" onClick={closeNavigation}>Business</a><a href="/student" onClick={closeNavigation}>Student</a><a href="/sign-in" onClick={closeNavigation}>Team Portal</a></div></nav></header>;
 }
 
 export function SiteFooter() {
