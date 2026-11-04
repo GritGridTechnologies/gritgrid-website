@@ -1,4 +1,5 @@
-import { boolean, integer, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { boolean, check, date, index, integer, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -116,3 +117,52 @@ export const verification = pgTable("verification", {
   createdAt: timestamp("createdAt"),
   updatedAt: timestamp("updatedAt"),
 });
+
+export const privateDiaryNote = pgTable("private_diary_note", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  content: text("content").notNull().default(""),
+  category: text("category").notNull().default("Personal Notes"),
+  tags: text("tags").array().notNull().default(sql`ARRAY[]::text[]`),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  index("private_diary_note_owner_updated_idx").on(table.userId, table.updatedAt.desc()),
+  index("private_diary_note_search_idx").using("gin", sql`to_tsvector('simple'::regconfig, coalesce(${table.title}, '') || ' ' || coalesce(${table.content}, '') || ' ' || coalesce(${table.category}, ''))`),
+  index("private_diary_note_tags_idx").using("gin", table.tags),
+  check("private_diary_note_title_length", sql`char_length(${table.title}) between 1 and 160`),
+  check("private_diary_note_content_length", sql`char_length(${table.content}) <= 20000`),
+  check("private_diary_note_category_length", sql`char_length(${table.category}) between 1 and 64`),
+  check("private_diary_note_tags_limit", sql`cardinality(${table.tags}) <= 10`),
+]);
+
+export const sharedDiaryEntry = pgTable("shared_diary_entry", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  workDate: date("work_date", { mode: "string" }).notNull(),
+  workSummary: text("work_summary").notNull(),
+  completedTasks: text("completed_tasks").notNull().default(""),
+  ongoingTasks: text("ongoing_tasks").notNull().default(""),
+  blockers: text("blockers").notNull().default(""),
+  nextDayPlan: text("next_day_plan").notNull().default(""),
+  projectReference: text("project_reference").notNull().default(""),
+  links: text("links").notNull().default(""),
+  status: text("status").notNull().default("draft"),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+}, (table) => [
+  uniqueIndex("shared_diary_user_date_unique").on(table.userId, table.workDate),
+  index("shared_diary_published_date_idx").on(table.workDate.desc(), table.createdAt.desc()).where(sql`${table.status} = 'published'`),
+  index("shared_diary_search_idx").using("gin", sql`to_tsvector('simple'::regconfig, coalesce(${table.workSummary}, '') || ' ' || coalesce(${table.completedTasks}, '') || ' ' || coalesce(${table.ongoingTasks}, '') || ' ' || coalesce(${table.blockers}, '') || ' ' || coalesce(${table.nextDayPlan}, '') || ' ' || coalesce(${table.projectReference}, ''))`),
+  check("shared_diary_status_valid", sql`${table.status} in ('draft', 'published')`),
+  check("shared_diary_summary_length", sql`char_length(${table.workSummary}) between 1 and 4000`),
+  check("shared_diary_completed_length", sql`char_length(${table.completedTasks}) <= 4000`),
+  check("shared_diary_ongoing_length", sql`char_length(${table.ongoingTasks}) <= 4000`),
+  check("shared_diary_blockers_length", sql`char_length(${table.blockers}) <= 4000`),
+  check("shared_diary_next_day_length", sql`char_length(${table.nextDayPlan}) <= 4000`),
+  check("shared_diary_project_ref_length", sql`char_length(${table.projectReference}) <= 500`),
+  check("shared_diary_links_length", sql`char_length(${table.links}) <= 2000`),
+  check("shared_diary_publish_timestamp_consistent", sql`(${table.status} = 'draft' and ${table.publishedAt} is null) or (${table.status} = 'published' and ${table.publishedAt} is not null)`),
+]);
