@@ -25,7 +25,7 @@ export function ModeSwitcher() {
   const pathname = usePathname();
   const activeMode = pathname.startsWith("/student") ? "Student" : pathname.startsWith("/admin") || pathname.startsWith("/team") || pathname === "/sign-in" ? "Team Portal" : "Business";
   return <div className="mode-switcher">
-    <button className="mode-trigger" type="button" aria-expanded={open} onClick={open ? () => setOpen(false) : openMenu}><BriefcaseBusiness aria-hidden="true" /> {activeMode} <ChevronDown aria-hidden="true" /></button>
+    <button className="mode-trigger" type="button" aria-label={`${open ? "Close" : "Open"} mode menu. Current mode: ${activeMode}`} aria-expanded={open} onClick={open ? () => setOpen(false) : openMenu}><BriefcaseBusiness aria-hidden="true" /><span className="mode-trigger-label">{activeMode}</span><ChevronDown aria-hidden="true" /></button>
     {open && <div className="mode-menu" role="menu"><p>MODE</p>{modes.map(({ label, description, href, Icon }) => <a key={label} href={href} role="menuitem" className={label === activeMode ? "active" : ""}><Icon aria-hidden="true" /><span><strong>{label}</strong><small>{description}</small></span></a>)}</div>}
   </div>;
 }

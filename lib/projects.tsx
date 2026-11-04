@@ -28,7 +28,7 @@ export function getProject(slug: string) { return projects.find((project) => pro
 export function matchesProject(project: Project, query: string, filter: string) { const haystack = [project.title, project.category, project.description, ...project.technologies].join(" ").toLowerCase(); return (!query || haystack.includes(query.toLowerCase())) && (filter === "All" || project.filters.includes(filter)); }
 
 export function ProjectVisual({ project }: { project: Project }) {
-  return <div className="project-visual" role="img" aria-label={`${project.title} technical preview`}><div className="visual-window"><span /><span /><span /></div><div className="visual-grid" /><strong>{project.visual}</strong><small>SELECTED TECHNICAL WORK</small></div>;
+  return <div className={`project-visual project-visual-${project.slug}`} role="img" aria-label={`Illustrative technical preview for ${project.title}`}><div className="visual-window" aria-hidden="true"><span /><span /><span /></div><div className="visual-grid" aria-hidden="true" /><div className="project-signal-grid" aria-hidden="true"><span className="project-signal-orbit project-signal-orbit-one" /><span className="project-signal-orbit project-signal-orbit-two" /><span className="project-signal-node project-signal-node-one" /><span className="project-signal-node project-signal-node-two" /></div><strong>{project.visual}</strong><small>SELECTED TECHNICAL WORK</small></div>;
 }
 
 export function ProjectCard({ project }: { project: Project }) {
