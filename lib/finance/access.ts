@@ -1,5 +1,6 @@
 import "server-only";
 import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 
 type FinanceOwner = { id: string; name: string; email: string };
@@ -22,5 +23,13 @@ export async function getFinanceAccess(): Promise<FinanceAccess> {
 export async function requireFinanceOwner() {
   const access = await getFinanceAccess();
   if (access.kind !== "owner") throw new Error("Owner authorization required.");
+  return access.owner;
+}
+
+export async function requireFinancePageOwner() {
+  const access = await getFinanceAccess();
+  if (access.kind === "anonymous") redirect("/team/sign-in?next=/team/finance");
+  if (access.kind === "password-change") redirect("/change-password");
+  if (access.kind === "forbidden") notFound();
   return access.owner;
 }

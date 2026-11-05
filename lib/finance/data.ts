@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { financeAuditLog, financeBudgets, financeCategories, financeExpenseAttachments, financeExpenses, user } from "@/lib/db/schema";
 import { getIndiaDate, financeDaysBetween, financeMonthKey, financeMonthStart, financeWeekStart, financeYearStart, formatFinanceDate, shiftFinanceDate } from "./dates";
 import { compareMoneyStrings, moneyToChartNumber, subtractMoneyStrings } from "./money";
-import { requireFinanceOwner } from "./access";
+import { requireFinancePageOwner } from "./access";
 import { isValidFinanceDate } from "./validation";
 import type { FinanceAttachmentMetadata, FinanceAuditEntry, FinanceBudgetUsage, FinanceCategoryOption, FinanceChartPoint, FinanceDashboardData, FinanceExpenseDetail, FinanceExpenseRow, FinanceFilters, FinancePaymentMethod, FinanceReportData, FinanceReportPeriod } from "./types";
 
@@ -68,12 +68,12 @@ async function activeCategories(): Promise<FinanceCategoryOption[]> {
 }
 
 export async function getFinanceCategories() {
-  await requireFinanceOwner();
+  await requireFinancePageOwner();
   return activeCategories();
 }
 
 export async function getFinanceDashboard(inputFilters: Partial<FinanceFilters> = {}): Promise<FinanceDashboardData> {
-  await requireFinanceOwner();
+  await requireFinancePageOwner();
   const filters = normalizeFilters(inputFilters);
   const today = getIndiaDate();
   const yesterday = shiftFinanceDate(today, -1);
@@ -212,7 +212,7 @@ function reportBounds(period: FinanceReportPeriod, today: string, from?: string,
 }
 
 export async function getFinanceReport(input: { period?: string; currency?: string; from?: string; to?: string } = {}): Promise<FinanceReportData> {
-  await requireFinanceOwner();
+  await requireFinancePageOwner();
   const today = getIndiaDate();
   const period = (["daily", "weekly", "monthly", "yearly", "custom"] as const).includes(input.period as FinanceReportPeriod) ? input.period as FinanceReportPeriod : "monthly";
   const currency = typeof input.currency === "string" && /^[A-Z]{3}$/.test(input.currency.toUpperCase()) ? input.currency.toUpperCase() : DEFAULT_CURRENCY;
@@ -247,7 +247,7 @@ export async function getFinanceReport(input: { period?: string; currency?: stri
 }
 
 export async function getFinanceBudgets(): Promise<FinanceBudgetUsage[]> {
-  await requireFinanceOwner();
+  await requireFinancePageOwner();
   const rows = await db.select({
     id: financeBudgets.id,
     name: financeBudgets.name,
@@ -288,7 +288,7 @@ export async function getFinanceBudgets(): Promise<FinanceBudgetUsage[]> {
 }
 
 export async function getFinanceExpenseDetail(id: string): Promise<FinanceExpenseDetail | null> {
-  await requireFinanceOwner();
+  await requireFinancePageOwner();
   if (!/^[A-Za-z0-9:_-]{1,180}$/.test(id)) return null;
   const [row] = await db.select({
     id: financeExpenses.id,
