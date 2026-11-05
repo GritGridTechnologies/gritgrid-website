@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, Clock3, LogIn, LogOut, ShieldCheck, Users, BarChart3 } from "lucide-react";
+import { ArrowUpRight, BookOpen, Clock3, LogIn, LogOut, ShieldCheck, Users, BarChart3, Receipt } from "lucide-react";
 import { clockIn, clockOut } from "@/app/team/actions";
 
 type RecordItem = { id: string; workDate: string; clockIn: Date | string; clockOut: Date | string | null };
@@ -33,7 +33,7 @@ export default function TeamPortal({ name, role, records, teamRecords }: { name:
 
         {(role === "owner" || role === "admin") && <section className="team-owner-controls" aria-labelledby="owner-controls-title">
           <div className="team-section-heading"><div><p className="eyebrow">Owner controls</p><h2 id="owner-controls-title">Run the organization.</h2></div><span>Full access</span></div>
-          <div className="team-owner-actions"><Link className="team-owner-action" href="/admin/team"><Users aria-hidden="true" /><span><strong>Manage team</strong><small>Promote managers, assign employees, view hierarchy</small></span></Link><Link className="team-owner-action" href="/admin/attendance"><BarChart3 aria-hidden="true" /><span><strong>Company attendance</strong><small>Review attendance across the organization</small></span></Link></div>
+          <div className="team-owner-actions"><Link className="team-owner-action" href="/admin/team"><Users aria-hidden="true" /><span><strong>Manage team</strong><small>Promote managers, assign employees, view hierarchy</small></span></Link><Link className="team-owner-action" href="/admin/attendance"><BarChart3 aria-hidden="true" /><span><strong>Company attendance</strong><small>Review attendance across the organization</small></span></Link>{role === "owner" && <Link className="team-owner-action" href="/team/finance"><Receipt aria-hidden="true" /><span><strong>Finance &amp; Expenses</strong><small>Manage company spending, budgets, and reports</small></span></Link>}</div>
         </section>}
 
         <section className="team-clock-card">
